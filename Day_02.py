@@ -6,9 +6,11 @@ def read_puzzle_data(filename):
         for line in f:
             row = []
             rval.append(row)
-            for number in line.strip().split('\t'):
-                number = int(number)
-                row.append(number)
+            line = line.strip()
+            line = line.split('\t')
+            for x in line:
+                row.append(int(x))
+
     return rval
 
 def part_one(filename):
@@ -25,7 +27,7 @@ def find_the_two_numbers_and_divide_them(row):
             if i == j:
                 continue
             if p % q == 0:
-                return p / q
+                return p // q
     return None
 
 
@@ -38,4 +40,4 @@ def part_two(filename):
     return tally
 
 
-print(f"The answer: {part_two('Day_02_short_data.txt')}")
+print(f"The answer: {part_two('Day_02_data.txt')}")
