@@ -18,6 +18,13 @@ def part_one(filename):
 
 def part_two(filename):
     digits = read_puzzle_data(filename)
+    running_sum = 0
+    i = -1
+    half = len(digits) // 2
+    for i in range(len(digits)):
+        if digits[i] == digits[(i + half) % len(digits)]:
+            running_sum += int(digits[i])
+    return running_sum
 
 
-print(f"The answer: {part_one('Day_01_data.txt')}")
+print(f"The answer: {part_two('Day_01_data.txt')}")
