@@ -12,7 +12,10 @@ def follow(instructions):
         try:
             prev_ic = ic
             ic += instructions[ic]
-            instructions[prev_ic] += 1
+            if instructions[prev_ic] >= 3:
+                instructions[prev_ic] -= 1
+            else:
+                instructions[prev_ic] += 1
             move_counter += 1
         except IndexError:
             print(f"We've escaped in {move_counter} moves.")
@@ -24,4 +27,4 @@ def part_one(filename):
     follow(instructions)
 
 
-part_one('Day_05_small_data.txt')
+part_one('Day_05_data.txt')
