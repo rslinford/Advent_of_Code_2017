@@ -3,26 +3,31 @@ import re
 
 class LogEntry:
     def __init__(self, program_name, weight):
-        self.program_name = program_name
+        self.name = program_name
         self.weight = weight
-        self.child_programs = set()
+        self.children = set()
+        self.parent = None
     def __repr__(self):
-        return f'LogEntry({self.program_name}, {self.weight}) children: {self.child_programs}'
+        if self.parent:
+            parent_name = self.parent.name
+        else:
+            parent_name = 'None'
+        return f'LogEntry({self.name}, {self.weight}) parent: {parent_name} children: {self.children}'
 
     def add_child(self, child):
-        self.child_programs.add(child)
+        self.children.add(child)
 
 
 def read_puzzle_data(filename):
     with open(filename, 'r') as f:
         data = [x.strip() for x in f.read().strip().split('\n')]
-    rval = []
+    rval = {}
     for line in data:
         result = re.search(r'^(\w+) \((\d+)\)', line)
         name = result.group(1)
         weight = result.group(2)
         entry = LogEntry(name, weight)
-        rval.append(entry)
+        rval[entry.name] = entry
         result = re.search(r'-> (.+)$', line)
         if result:
             children = result.group(1).strip().split(', ')
@@ -30,11 +35,29 @@ def read_puzzle_data(filename):
                 entry.add_child(child)
     return rval
 
+def parentage(log_entries: dict):
+    for entry in log_entries.values():
+        if len(entry.children) == 0:
+            continue
+        for child in entry.children:
+            child_entry = log_entries.get(child)
+            child_entry.parent = entry
+
+
+def pick_the_root(log_entries):
+    for entry in log_entries.values():
+        if not entry.parent:
+            return entry
+
 
 def part_one(filename):
-    log = read_puzzle_data(filename)
-    for entry in log:
+    log_entries = read_puzzle_data(filename)
+    parentage(log_entries)
+    root = pick_the_root(log_entries)
+
+    for entry in log_entries.values():
         print(entry)
+    print(f'Root of tree {root}')
 
 
 part_one('Day_07_small_data.txt')
