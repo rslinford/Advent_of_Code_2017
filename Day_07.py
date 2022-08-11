@@ -9,6 +9,7 @@ class LogEntry:
         self.weight = weight
         self.children = set()
         self.parent = None
+        self.sibling_delta = 0
         LogEntry.instances[self.name] = self
 
     def __repr__(self):
@@ -90,9 +91,12 @@ def one_of_these_things_is_not_like_the_other_children(log_entry):
         print(f'Parent {log_entry.name}  Child {x.name}({x.weight})  total weight {x.total_weight()}')
     assert(child_list[0] != child_list[-1])
     delta = child_list[0].total_weight() - child_list[-1].total_weight()
+
     if child_list[0] == child_list[1]:
         return child_list[-1], delta
+        child_list[-1].sibling_delta=delta
     else:
+        child_list[0].sibling_delta=delta
         return child_list[0], delta
 
 def follow_the_odd_one(log_entry):
@@ -104,7 +108,8 @@ def follow_the_odd_one(log_entry):
             print(f'The node is {prev_odd_child_entry.parent.name}')
             return # todo: what should be returned here?
         if odd_child_entry:
-            print(f'{odd_child_entry.name} is the odd ball for parent: {prev_odd_child_entry.name}  with a delta: {delta}')
+            answer = prev_odd_child_entry.weight - prev_odd_child_entry.sibling_delta
+            print(f'{odd_child_entry.name}({prev_odd_child_entry.weight}) is the odd ball for parent: {prev_odd_child_entry.name}  with a delta: {prev_odd_child_entry.sibling_delta} Answer: {answer}')
         else:
             print(f'Parent ({prev_odd_child_entry.name} has no odd children.')
 
@@ -116,4 +121,4 @@ def part_two(filename):
     follow_the_odd_one(root)
 
 
-part_two('Day_07_small_data.txt')
+part_two('Day_07_data.txt')
