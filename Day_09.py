@@ -12,6 +12,7 @@ def parse_data(data):
     inside_garbage = False
     ignore_next_character = False
     depth = 0
+    running_score = 0
     for c in data:
         if ignore_next_character:
             ignore_next_character = False
@@ -22,6 +23,8 @@ def parse_data(data):
                     pop_char = q.get()
                     assert (pop_char == '<')
                     inside_garbage = False
+                case '!':  # ignore the next character
+                    ignore_next_character = True
                 case _:
                     pass # in garbage anything goes
             continue
@@ -29,6 +32,7 @@ def parse_data(data):
             case '{': # begin group
                 q.put(c)
                 depth += 1
+                running_score += depth
                 print(f'Begin group at depth {depth}')
             case '}': # end group
                 pop_char = q.get()
@@ -40,7 +44,7 @@ def parse_data(data):
                 inside_garbage = True
             case '!': # ignore the next character
                 ignore_next_character = True
-
+    print(f'Running score {running_score}')
 
 def part_one(filename):
     data = load_puzzle_data(filename)
