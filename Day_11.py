@@ -27,22 +27,16 @@ def part_one(filename):
     for d in data:
         match d:
             case 'n':
-                # print('North')
                 h = hex_neighbor(h, 2)
             case 'ne':
-                # print('North East')
                 h = hex_neighbor(h, 1)
             case 'se':
-                # print('South East')
                 h = hex_neighbor(h, 0)
             case 's':
-                # print('South')
                 h = hex_neighbor(h, 5)
             case 'sw':
-                # print('South West')
                 h = hex_neighbor(h, 4)
             case 'nw':
-                # print('North West')
                 h = hex_neighbor(h, 3)
             case _:
                 assert False
