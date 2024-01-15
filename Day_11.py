@@ -84,4 +84,4 @@ class Test(unittest.TestCase):
         self.assertEqual(3, part_one('Day_11_test_02_data.txt'))
 
     def test_part_two(self):
-        self.assertEqual(-1, part_two('Day_11_data.txt'))
+        self.assertEqual(1622, part_two('Day_11_data.txt'))
