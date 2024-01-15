@@ -20,7 +20,7 @@ class LogEntry:
         return f'LogEntry({self.name}, {self.weight}) parent: {parent_name} children: {self.children}'
 
     def __lt__(self, other):
-        self.name < other.name
+        return self.name < other.name
 
     def add_child(self, child):
         self.children.add(child)
